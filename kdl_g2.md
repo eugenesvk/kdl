@@ -14,58 +14,61 @@
 
 # Entries
 `node-prop-or-arg`	:= `prop` | `value`
-`node-children`   	:= '{' `nodes` `final-node`? '}'
-`node-terminator` 	:= `single-line-comment` | `newline` | ';' | `eof`
+`node-children`   	:= '{' `nodes` `final-node`? `}`
+`node-terminator` 	:= `single-line-comment` | `newline` | ; | `eof`
 
 `prop` 	:= `string` `node-space`* '=' `node-space`* `value`
 `value`	:= `type`? `node-space`* (`string` | number | keyword)
-`type` 	:= '(' `node-space`* `string` `node-space`* ')'
+`type` 	:= `(` `node-space`* `string` `node-space`* `)`
 
 # Strings
 `string`	:= `identifier-string` | `quoted-string` | `raw-string` ¶
 
-`identifier-string`           	:= unambiguous-ident | signed-ident | dotted-ident
-unambiguous-ident             	:= ((identifier-char - digit - sign - '.') identifier-char*) - disallowed-keyword-strings
-signed-ident                  	:= sign ((identifier-char - digit - '.') identifier-char*)?
-dotted-ident                  	:= sign? '.' ((identifier-char - digit) identifier-char*)?
-identifier-char               	:= unicode - `unicode-space` - `newline` - [\\/(){};\[\]"#=] - `disallowed-literal-code-points`
-disallowed-keyword-identifiers	:= 'true' | 'false' | 'null' | 'inf' | '-inf' | 'nan'
+`identifier-string`             	:= `unambiguous-ident` | `signed-ident` | `dotted-ident`
+`unambiguous-ident`             	:=           ((`identifier-char` - digit - sign - '.') `identifier-char`*) - `disallowed-keyword-strings`
+`signed-ident`                  	:= `sign`    ((`identifier-char` - digit        - '.') `identifier-char`*)?
+`dotted-ident`                  	:= `sign`? . ((`identifier-char` - digit             ) `identifier-char`*)?
+`identifier-char`               	:= `unicode` - `unicode-space` - `newline` - `[\/(){};[]"#=]` - `disallowed-literal-code-points`
+`disallowed-keyword-identifiers`	:= true | false | null | inf | '-inf' | nan
 
-`quoted-string`          	:= '"' `single-line-string-body` '"' | '"""' `newline` multi-line-string-body `newline` (`unicode-space` | `ws`-escape)* '"""'
-`single-line-string-body`	:= (string-character - `newline`)*
-multi-line-string-body   	:= (('"' | '""')? string-character)*
-string-character         	:= '\\' (["\\bfnrts] | 'u{' `hex-digit`{1, 6} '}') | `ws`-escape | [^\\"] - `disallowed-literal-code-points`
+`quoted-string`          	:= `"`             `single-line-string-body` `"`
+  →                      	 | `"""` `newline` `multi-line-string-body` `newline` (`unicode-space` | `ws`-escape)* `"""`
+`single-line-string-body`	:= (              `string-character` - `newline`)*
+`multi-line-string-body` 	:= ((`"` | `""`)? `string-character`            )*
+`string-character`       	:= '\\' (["\\bfnrts] | 'u{' `hex-digit`{1, 6} '}') | `ws`-escape | [^\\"] - `disallowed-literal-code-points`
 `ws`-escape              	:= '\\' (`unicode-space` | `newline`)+
-`hex-digit`                	:= [0-9a-fA-F]
+`hex-digit`              	:= [0-9a-fA-F]
 
-`raw-string`                 	:= '#' `raw-string-quotes` '#' | '#' `raw-string` '#'
-`raw-string-quotes`          	:= '"' `single-line-raw-string-body` '"' | '"""' `newline` `multi-line-raw-string-body` `newline` `unicode-space`* '"""'
-`single-line-raw-string-body`	:= '' | (`single-line-raw-string-char` - '"') `single-line-raw-string-char`* ? | '"' (`single-line-raw-string-char` - '"') `single-line-raw-string-char`* ?
-`single-line-raw-string-char`	:= unicode - `newline` - `disallowed-literal-code-points`
-`multi-line-raw-string-body` 	:= (unicode - `disallowed-literal-code-points`)* ?
+`raw-string`                 	:= # `raw-string-quotes` #
+  →                          	 | # `raw-string`        #
+`raw-string-quotes`          	:=      `"`   `single-line-raw-string-body`   `"` | `"""` `newline` `multi-line-raw-string-body` `newline` `unicode-space`* `"""`
+`single-line-raw-string-body`	:= '' |     (`single-line-raw-string-char` - `"`) `single-line-raw-string-char`* ?
+  →                          	      | `"` (`single-line-raw-string-char` - `"`) `single-line-raw-string-char`* ?
+`single-line-raw-string-char`	:=  `unicode` - `newline` - `disallowed-literal-code-points`
+`multi-line-raw-string-body` 	:= (`unicode` - `disallowed-literal-code-points`)* ?
 
 # Numbers
 number	:= `keyword-number` | `hex` | `octal` | `binary` | `decimal`
 
-`decimal` 	:= sign? `integer` (. `integer`)? `exponent`?
-`exponent`	:= (e|E) sign? `integer`
-`integer` 	:= `digit` (`digit`|`'_'`)*
+`decimal` 	:=      `sign`? `integer` (. `integer`)? `exponent`?
+`exponent`	:= [eE] `sign`? `integer`
+`integer` 	:= `digit` (`digit`|_)*
 `digit`   	:= [0-9]
-`sign`    	:= +|-
+`sign`    	:= [+-]
 
-`hex`   	:= sign? '0x' `hex-digit` (`hex-digit` | `'_'`)*
-`octal` 	:= sign? '0o' [0-7] [0-7_]*
-`binary`	:= sign? '0b' ('0' | '1') ('0' | '1' | `'_'`)*
+`hex`   	:= `sign`? 0x `hex-digit` (`hex-digit` | _)*
+`octal` 	:= `sign`? 0o [0-7] [0-7_]*
+`binary`	:= `sign`? 0b [0 1] [0 1_]*
 
-# Keywords and booleans.
-`keyword`       	:= `boolean` | '#null'
-`keyword-number`	:= '#inf' | '#-inf' | '#nan'
-`boolean`       	:= '#true' | '#false'
+# Keywords and booleans
+`keyword`       	:= `boolean` | #null
+`keyword-number`	:= #inf  | `#-inf` | #nan
+`boolean`       	:= #true | #false
 
 # Specific code points
 `bom`                           	:= '\u{FEFF}'
 `disallowed-literal-code-points`	:= See Table (Disallowed Literal Code Points)
-unicode                         	:= Any Unicode Scalar Value
+`unicode`                       	:= Any Unicode Scalar Value
 `unicode-space`                 	:= See Table (All White_Space unicode characters which are not ``newline``)
 
 # Comments
