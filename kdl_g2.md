@@ -3,31 +3,31 @@
 # Nodes
 `nodes`	:= (`line-space`* `node`)* `line-space`*
 
-`base-node`	:= `slashdash`? `type`? `node-space`* string
+`base-node`	:=   `slashdash`? `type`? `node-space`* `string`
   (`node-space`+ `slashdash`? `node-prop-or-arg`)* // slashdashed node-children must always be after props and args
-  (`node-space`+ `slashdash` `node-children`)*
-  (`node-space`+ `node-children`)?
-  (`node-space`+ `slashdash` `node-children`)*
-   `node-space`* 
+  (`node-space`+ `slashdash`  `node-children`)*
+  (`node-space`+              `node-children`)?
+  (`node-space`+ `slashdash`  `node-children`)*
+   `node-space`*
 `node`      	:= `base-node` `node-terminator`
 `final-node`	:= `base-node` `node-terminator`?
 
 # Entries
 `node-prop-or-arg`	:= `prop` | `value`
-`node-children`   	:= '{' `nodes` `final-node`? `}`
+`node-children`   	:= `{` `nodes` `final-node`? `}`
 `node-terminator` 	:= `single-line-comment` | `newline` | ; | `eof`
 
-`prop` 	:= `string` `node-space`* '=' `node-space`* `value`
-`value`	:= `type`? `node-space`* (`string` | number | keyword)
-`type` 	:= `(` `node-space`* `string` `node-space`* `)`
+`prop` 	:= `string` `node-space`* = `node-space`* `value`
+`value`	:= `type`?  `node-space`*                (`string` | `number` | `keyword`)
+`type` 	:= `(`      `node-space`*                 `string`                         `node-space`* `)`
 
 # Strings
 `string`	:= `identifier-string` | `quoted-string` | `raw-string` ¶
 
 `identifier-string`             	:= `unambiguous-ident` | `signed-ident` | `dotted-ident`
-`unambiguous-ident`             	:=           ((`identifier-char` - digit - sign - '.') `identifier-char`*) - `disallowed-keyword-strings`
-`signed-ident`                  	:= `sign`    ((`identifier-char` - digit        - '.') `identifier-char`*)?
-`dotted-ident`                  	:= `sign`? . ((`identifier-char` - digit             ) `identifier-char`*)?
+`unambiguous-ident`             	:=           ((`identifier-char` - `digit` - `sign` - .) `identifier-char`*) - `disallowed-keyword-strings`
+`signed-ident`                  	:= `sign`    ((`identifier-char` - `digit`          - .) `identifier-char`*)?
+`dotted-ident`                  	:= `sign`? . ((`identifier-char` - `digit`             ) `identifier-char`*)?
 `identifier-char`               	:= `unicode` - `unicode-space` - `newline` - `[\/(){};[]"#=]` - `disallowed-literal-code-points`
 `disallowed-keyword-identifiers`	:= true | false | null | inf | '-inf' | nan
 
@@ -35,8 +35,8 @@
   →                      	 | `"""` `newline` `multi-line-string-body` `newline` (`unicode-space` | `ws`-escape)* `"""`
 `single-line-string-body`	:= (              `string-character` - `newline`)*
 `multi-line-string-body` 	:= ((`"` | `""`)? `string-character`            )*
-`string-character`       	:= '\\' (["\\bfnrts] | 'u{' `hex-digit`{1, 6} '}') | `ws`-escape | [^\\"] - `disallowed-literal-code-points`
-`ws`-escape              	:= '\\' (`unicode-space` | `newline`)+
+`string-character`       	:= `\` (`["\bfnrts]` | `u{` `hex-digit`{1, 6} `}`) | `ws`-escape | `[^\"]` - `disallowed-literal-code-points`
+`ws`-escape              	:= `\` (`unicode-space` | `newline`)+
 `hex-digit`              	:= [0-9a-fA-F]
 
 `raw-string`                 	:= # `raw-string-quotes` #
@@ -72,24 +72,26 @@ number	:= `keyword-number` | `hex` | `octal` | `binary` | `decimal`
 `unicode-space`                 	:= See Table (All White_Space unicode characters which are not ``newline``)
 
 # Comments
-`single-line-comment`	:= '//' ^`newline`* (`newline` | `eof`)
-`multi-line-comment` 	:= '/*' `commented-block`
-`commented-block`    	:= '*/' | (`multi-line-comment` | '*' | '/' | [^*/]+) `commented-block`
-`slashdash`          	:= '/-' `line-space`*
+`single-line-comment`	:= `//` ^`newline`* (`newline` | `eof`)
+`multi-line-comment` 	:= `/*` `commented-block`
+`commented-block`    	:= `*/` | (`multi-line-comment` | `*` | `/` | [^*/]+) `commented-block`
+`slashdash`          	:= `/-` `line-space`*
 
 # Whitespace
 `ws`     	:= `unicode-space` | `multi-line-comment`
 `escline`	:= '\\' `ws`* (`single-line-comment` | `newline` | `eof`)
 `newline`	:= See Table (All Newline White_Space)
-# Whitespace where newlines are allowed.
+# Whitespace where newlines are allowed
 `line-space`	:= `node-space` | `newline` | `single-line-comment`
 # Whitespace within nodes, where newline-ish things must be esclined.
 `node-space`	:= `ws`* `escline` `ws`* | `ws`+
 
 # Version marker
-`version`	:= '/-' `unicode-space`* 'kdl-version' `unicode-space`+ ('1' | '2') `unicode-space`* `newline`
+`version`	:= '/-' `unicode-space`* 'kdl-version' `unicode-space`+ ([12]) `unicode-space`* `newline`
 
 ### Grammar language
+
+`[^\"]` are not literals, just escaped to avoid `\\`
 
 The grammar language syntax is a combination of ABNF with some regex spice thrown in.
 Specifically:
