@@ -17,9 +17,6 @@
 * One or two consecutive double-quotes are now allowed in the bodies of multi-line quoted strings, without needing to be escaped.
 
 # Identifiers
-* `#inf`, `#-inf`, and `#nan` have been added in order to properly support IEEE floats for implementations that choose to represent their decimals that   way.
-* `null`, `true`, and `false` are now `#null`, `#true`, and `#false`. Using the unprefixed versions of these values is a syntax error.
-* Correspondingly, the identifiers `inf`, `-inf`, and `nan` are now syntax  errors.
 * Bare identifiers can now be used as values in Arguments and Properties, and are interpreted as string values.
 * `.1`, `+.1` etc are no longer valid identifiers, to prevent confusion and conflicts with numbers.
 
@@ -30,7 +27,6 @@
   * Between annotations and the thing they're annotating `(blah) node (thing) 1 y= (who) 2`
   * Around `=` for props (`x = 1`)
 
-* Line continuations can be followed by an EOF now, instead of requiring a newline (or comment). `node \<EOF>` is now a legal KDL document
-* The last node in a child block no longer needs to be terminated with `;`, even if the closing `}` is on the same line, so this is now a legal node: `node{foo;bar;baz}`
+* last node in a child block no longer needs to be terminated with `;`, even if the closing `}` is on the same line, so this is now a legal node: `node{foo;bar;baz}`
 * Slashdash (`/-`) -compatible locations adjusted to be more clear andintuitive. They can now be used in exactly three different places: before nodes, before entire entries, or before entire child blocks.
-* Furthermore, The ordering of slashdashed elements has been restricted such that a slashdashed child block cannot go before an entry (including slashdashed entries).
+  * ordering of slashdashed elements has been restricted: slashdashed child block cannot go before an entry (including slashdashed entries)
