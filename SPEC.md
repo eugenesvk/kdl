@@ -880,10 +880,8 @@ multi-line-string-body := (('"' | '""')? string-character)*
 string-character := '\\' (["\\bfnrts] | 'u{' hex-unicode '}') | ws-escape | [^\\"] - disallowed-literal-code-points
 ws-escape := '\\' (unicode-space | newline)+
 hex-digit := [0-9a-fA-F]
-hex-unicode := hex-digit{1, 6} - surrogates
-surrogates := [dD][8-9a-fA-F]hex-digit{2}
-// U+D800-DFFF: D  8         00
-//              D  F         FF
+hex-unicode := [\u{0}-\u{10FFFF}] - surrogate  // Unicode Scalar Value₁₆
+surrogate := [\u{D800}-\u{DFFF}]
 
 raw-string := '#' raw-string-quotes '#' | '#' raw-string '#'
 raw-string-quotes := '"' single-line-raw-string-body '"' | '"""' newline multi-line-raw-string-body newline unicode-space* '"""'
