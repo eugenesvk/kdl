@@ -1,15 +1,15 @@
-# KDL Changelog
-
 # String
 * All literal whitespace following a `\` in a string is now discarded.
+# Single line
+  * Using `"""` for a single-line string is a syntax error
 
-* Multiline string escape rules have been tweaked significantly.
-  * Multi-line strings must now use `"""` as delimeters. The opening delimiter must be immediately followed by a newline, and the closing delimiter must be on its own line, prefixed by optional whitespace.
-  * Multi-line strings are now automatically dedented, according to the common  whitespace matching the whitespace prefix of the closing line.
-  * Multi-line strings' literal Newline sequences are now normalized to single `LF`s.
-  * Multiline strings, both Raw and Quoted, must now use `"""` instead of a single `"`. Using `"""` for a single-line string is a syntax error.
-  * Grammar has been fixed to disallow raw strings like `#"""#`, which are now properly treated as invalid multi-line raw strings (instead of the equivalent of `"\""`).
-  * One or two consecutive double-quotes are now allowed in the bodies of multi-line quoted strings, without needing to be escaped
+# Multiline string
+  * must use `"""` as delimeters. The opening delimiter must be immediately followed by a newline, and the closing delimiter must be on its own line, prefixed by optional whitespace.
+  * (Raw and Quoted), must now use `"""` instead of a single `"`
+  * automatically dedented, according to the common  whitespace matching the whitespace prefix of the closing line.
+  * strings' literal Newline sequences are now normalized to single `LF`s.
+  * Error: `#"""#` invalid multi-line raw strings (instead of the equivalent of `"\""`)
+  * Ok: `"` or `""` consecutive double-quotes allowed in the bodies of multi-line quoted strings (no escapes)
 
 # Identifiers
 * Bare identifiers can now be used as values in Arguments and Properties, and are interpreted as string values.
