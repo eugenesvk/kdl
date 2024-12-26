@@ -913,7 +913,8 @@ boolean := '#true' | '#false'
 bom := '\u{FEFF}'
 disallowed-literal-code-points := See Table (Disallowed Literal Code Points)
 unicode := Any Unicode Scalar Value
-unicode-space := See Table (All White_Space unicode characters which are not `newline`)
+unicode-space   := See Table Whitespace (All White_Space unicode characters which are not `newline`)
+unicode-newline := See Table Newline    (All White_Space unicode characters which are     `newline`)
 
 // Comments
 single-line-comment := '//' ^newline* (newline | eof)
@@ -924,7 +925,7 @@ slashdash := '/-' line-space*
 // Whitespace
 ws := unicode-space | multi-line-comment
 escline := '\\' ws* (single-line-comment | newline | eof)
-newline := See Table (All Newline White_Space)
+newline := ('\u{000D}' '\u{000A}') | unicode-newline
 // Whitespace where newlines are allowed.
 line-space := node-space | newline | single-line-comment
 // Whitespace within nodes, where newline-ish things must be esclined.
