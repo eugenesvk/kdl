@@ -875,7 +875,7 @@ identifier-char := unicode - unicode-space - newline - [\\/(){};\[\]"#=] - disal
 disallowed-keyword-identifiers := 'true' | 'false' | 'null' | 'inf' | '-inf' | 'nan'
 
 quoted-string := '"' single-line-string-body '"' | '"""' newline multi-line-string-body newline (unicode-space | ws-escape)* '"""'
-single-line-string-body := (string-character - newline)*
+single-line-string-body := (string-character - newline)*  // excludes literal newlines, escaped are allowed
 multi-line-string-body := (('"' | '""')? string-character)*
 string-character := '\\' (["\\bfnrts] | 'u{' hex-unicode '}') | ws-escape | [^\\"] - disallowed-literal-code-points
 ws-escape := '\\' (unicode-space | newline)+
