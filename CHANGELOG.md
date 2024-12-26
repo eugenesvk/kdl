@@ -1,5 +1,4 @@
 # String
-* All literal whitespace following a `\` in a string is now discarded.
 # Single line
   * Using `"""` for a single-line string is a syntax error
 
