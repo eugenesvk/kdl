@@ -1,7 +1,4 @@
 # String
-# Single line
-  * Using `"""` for a single-line string is a syntax error
-
 # Multiline string
   * must use `"""` as delimeters. The opening delimiter must be immediately followed by a newline, and the closing delimiter must be on its own line, prefixed by optional whitespace.
   * (Raw and Quoted), must now use `"""` instead of a single `"`
