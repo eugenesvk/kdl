@@ -1,6 +1,5 @@
 # Identifiers
 * Bare identifiers can now be used as values in Arguments and Properties, and are interpreted as string values.
-* `.1`, `+.1` etc are no longer valid identifiers, to prevent confusion and conflicts with numbers.
 
 # Whitespace
 * `node-space` is now allowed as whitespace after a `slashdash`, meaning line continuations will work now.
