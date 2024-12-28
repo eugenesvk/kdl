@@ -4,7 +4,6 @@
 # Whitespace
 * `node-space` is now allowed as whitespace after a `slashdash`, meaning line continuations will work now.
 * More places allow whitespace (node-spaces, specifically) now
-  * Inside `(foo)` annotations `( foo )` would be legal `( f oo )` would not be, since it has two identifiers
   * Between annotations and the thing they're annotating `(blah) node (thing) 1 y= (who) 2`
   * Around `=` for props (`x = 1`)
 
