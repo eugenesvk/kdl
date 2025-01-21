@@ -1,0 +1,35 @@
+/-kdl-version 2
+keybind fds=1
+(inv)Escape	(:)"this is an Ex command" (e)"as is this" "this is a regular command" if=condition?
+
+// clean single line mode as an explicit key=value
+(nv)"my word movement commands" {	// user groups with optional global (modes)
+   (n)D cmd=word_backward        	// ... which can be overridden on a per-key basis
+      F cmd=word_forward mode=n  	// ... or via an explicit key=value
+  Alt+F cmd=word_end_forward     	// no "Quotes" needed for key combos
+  "M B" cmd=word_backward        	// only for key sequences with spaces
+  M⠀B   cmd=word_backward        	// ... unless you use a trick with use non-blank⠀blanks
+  M&B   cmd=word_backward        	// unless you use &
+}
+my_settings_group { // Can quote and vertically align keys to highlight mod diffs
+  "Shift+          F12"	cmd=open_settings_file
+  "            Alt+F12"	cmd=open_settings_file
+  "       Ctrl+    F12"	cmd=open_settings_file
+          Ctrl+⠀⠀⠀⠀F12 	cmd=open_settings_file //non-blank⠀blanks
+}
+// Can also accept keys without any groups
+(inv)Escape	cmd="normal_mode" if="""
+     !search_focus
+  && !modal_focus
+  && !search_active
+  && !inline_completion_visible
+  """
+// ↑ multiline strings can be helpful in stacking multiple conditions
+// ↓ but a long single line also works
+(inv)Escape	cmd=normal_mode if="!search_focus && !modal_focus && !search_active && !inline_completion_visible"
+
+(inv)Escape	normal_mode if="!search_focus && !modal_focus && !search_active && !inline_completion_visible"
+(i  )Ctrl+I	normal_mode if="!search_focus && !modal_focus && !search_active && !inline_completion_visible"
+
+nO-_d   {parent is=nO-_d  ; ImP-O_rT is=ImP-O_rT;}
+key-map {parent is=key-map; ImP-O_rT is=ImP-O_rT;}
