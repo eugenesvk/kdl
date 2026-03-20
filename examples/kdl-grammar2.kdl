@@ -30,7 +30,7 @@ string                    	 =  str🆔 | string'' | string_raw  ¶              
       char🆔               	 =  uchar − u␠ − ␤ − char🆔¬ − char🛑                  	  \
       char🆔¬              	 =  #"(;){"}[#]/=\"#                                 	    \
     keyword🆔🛑             	=  true⠀|⠀false⠀|⠀null⠀|⠀inf⠀|⠀-inf⠀|⠀nan            	  \
-  string''                	 = “                              ⦅     char_str − ␤⦆* ”   \
+  string''                	 = “                              ⦅     char_str − ␤⦆* ” !="⧵␤ are allowed within ‘char_str’"  \
                           	|= “““                                                    \
                           	  ⦅␤ de␠e≡ ⦅“?“? char_str − ␤ - u␠⦆ ⦅“?“? char_str − ␤⦆* ⦆*	\
                           	  ⦅␤       ⦅                    u␠⦆*                    ⦆* 	\
