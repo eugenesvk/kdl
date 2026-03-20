@@ -940,7 +940,7 @@ except for non Unicode Scalar Value, which can't be represented even as escapes)
 
 This is the full official grammar for KDL and should be considered
 authoritative if something seems to disagree with the text above. The grammar
-language syntax is defined in {{grammar-language}}.
+language syntax is defined in {{grammar-language}}. A KDL version is in [examples/kdl-grammar2.kdl](./examples/kdl-grammar2.kdl).
 
 ~~~abnf
 document := bom? version? nodes
